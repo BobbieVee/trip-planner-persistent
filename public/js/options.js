@@ -18,16 +18,37 @@ $(function () {
     var $activitySelect = $optionsPanel.find('#activity-choices');
 
     // make all the option tags (second arg of `forEach` is a `this` binding)
-    hotels.forEach(makeOption, $hotelSelect);
-    restaurants.forEach(makeOption, $restaurantSelect);
-    activities.forEach(makeOption, $activitySelect);
+    //hotels.forEach(makeOption, $hotelSelect);
+    //restaurants.forEach(makeOption, $restaurantSelect);
+    //activities.forEach(makeOption, $activitySelect);
+
+    $.ajax({
+        method: 'GET',
+        url: '/api/options'
+    })
+    .then(function(result){
+      
+        var hotels = result[0]
+        var restaurants = result[1]
+        var activities = result[2]
+
+        hotels.forEach(makeOption, $hotelSelect);
+        restaurants.forEach(makeOption, $restaurantSelect);
+        activities.forEach(makeOption, $activitySelect);  
+        
+
+        attractionsModule.loadEnhancedAttractions('hotels', hotels);
+        attractionsModule.loadEnhancedAttractions('restaurants', restaurants);
+        attractionsModule.loadEnhancedAttractions('activities', activities);
+    })
+
 
     // Once you've made AJAX calls to retrieve this information,
     // call attractions.loadEnhancedAttractions in the fashion
     // exampled below in order to integrate it.
-    attractionsModule.loadEnhancedAttractions('hotels', hotels);
-    attractionsModule.loadEnhancedAttractions('restaurants', restaurants);
-    attractionsModule.loadEnhancedAttractions('activities', activities);
+    // attractionsModule.loadEnhancedAttractions('hotels', hotels);
+    // attractionsModule.loadEnhancedAttractions('restaurants', restaurants);
+    // attractionsModule.loadEnhancedAttractions('activities', activities);
 
     function makeOption(databaseAttraction) {
         var $option = $('<option></option>') // makes a new option tag

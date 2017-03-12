@@ -62,6 +62,7 @@ var data = {
   ]
 };
 
+var theday;
 db.sync({force: true})
 .then(function () {
   console.log("Dropped old data, now inserting data");
@@ -73,6 +74,17 @@ db.sync({force: true})
       });
     });
   });
+})
+.then(function (){
+  return db.model('day').create({number:1});
+})
+.then(function(_day){
+  theday = _day;
+  return  Hotel.findById(1);
+})
+.then((hotel)=>{
+  theday.hotelId = hotel.id;
+  return theday.save();
 })
 .then(function () {
   console.log("Finished inserting data");

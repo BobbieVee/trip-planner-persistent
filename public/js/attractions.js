@@ -12,6 +12,7 @@ var attractionsModule = (function () {
     // application state
 
     var enhanced = {}
+    console.log('enhanced',enhanced)
 
     // private helper methods (only available inside the module)
 

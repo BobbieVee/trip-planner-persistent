@@ -31,8 +31,10 @@ var dayModule = (function () {
     this.hotel = null;
     this.restaurants = [];
     this.activities = [];
+
     // for days based on existing data
     utilsModule.merge(data, this);
+
     if (this.hotel) this.hotel = attractionsModule.getEnhanced(this.hotel);
     this.restaurants = this.restaurants.map(attractionsModule.getEnhanced);
     this.activities = this.activities.map(attractionsModule.getEnhanced);
@@ -72,6 +74,8 @@ var dayModule = (function () {
     // day UI
     this.$button.addClass('current-day');
     $dayTitle.text('Day ' + this.number);
+    
+
     // attractions UI
     function show (attraction) { attraction.show(); }
     if (this.hotel) show(this.hotel);

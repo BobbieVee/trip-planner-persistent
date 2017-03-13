@@ -82,6 +82,7 @@ var tripModule = (function () {
 
     addToCurrent: function (attraction) {
       currentDay.addAttraction(attraction);
+      console.log('load',days);
     },
 
     removeFromCurrent: function (attraction) {

@@ -4,6 +4,8 @@ var Hotel = require('../models/hotel');
 var Restaurant = require('../models/restaurant');
 var Activity = require('../models/activity');
 var Day = require('../models/day');
+var Meal = require('../models/meal');
+var Adventure = require('../models/adventure');
 
 router.get('/', function(req, res, next) {
   Promise.all([
@@ -42,7 +44,9 @@ router.get('/api/days/:id', (req, res, next)=> {
     {
       include: 
       [ 
-        { model: Hotel, as: 'stay' }
+        { model: Hotel},
+        { model: Adventure, include:[ Activity ] },
+        { model: Meal, include: [Restaurant]}
       ]})
   .then((day)=>{
       res.status(200).json(day);

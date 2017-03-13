@@ -7,6 +7,8 @@ var Place = require('./models/place');
 var Hotel = require('./models/hotel');
 var Restaurant = require('./models/restaurant');
 var Activity = require('./models/activity');
+var Meal = require('./models/meal');
+var Adventure = require('./models/adventure');
 
 var data = {
   hotel: [
@@ -63,6 +65,8 @@ var data = {
 };
 
 var theday;
+var theday2;
+
 db.sync({force: true})
 .then(function () {
   console.log("Dropped old data, now inserting data");
@@ -76,15 +80,32 @@ db.sync({force: true})
   });
 })
 .then(function (){
-  return db.model('day').create({number:1});
+  return Promise.all([
+    db.model('day').create({number:1}),
+    db.model('day').create({number:2})
+  ]);
 })
-.then(function(_day){
-  theday = _day;
-  return  Hotel.findById(1);
+.then((days)=>{
+  days[0].hotelId = 1;
+  days[1].hotelId = 2;
+  return Promise.all([
+    days[0].save(),
+    days[1].save()
+  ]);
 })
-.then((hotel)=>{
-  theday.hotelId = hotel.id;
-  return theday.save();
+.then(()=> {
+  return Promise.all([
+    Adventure.create({activityId: 1, dayId: 1}),
+    Adventure.create({activityId: 3, dayId: 1}),
+    Meal.create({restaurantId: 1, dayId: 1}),
+    Meal.create({restaurantId: 5, dayId: 1}),
+    Meal.create({restaurantId: 7, dayId: 1}),
+    Adventure.create({activityId: 2, dayId: 2}),
+    Adventure.create({activityId: 4, dayId: 2}),
+    Meal.create({restaurantId: 2, dayId: 2}),
+    Meal.create({restaurantId: 6, dayId: 2}),
+    Meal.create({restaurantId: 8, dayId: 2})
+  ])
 })
 .then(function () {
   console.log("Finished inserting data");

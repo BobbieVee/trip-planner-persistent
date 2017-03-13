@@ -54,5 +54,20 @@ router.get('/api/days/:id', (req, res, next)=> {
   .catch(next);
 });
 
+router.get('/api/days', (req, res, next)=> {
+  Day.findAll( 
+    {
+      include: 
+      [ 
+        { model: Hotel},
+        { model: Adventure, include:[ Activity ] },
+        { model: Meal, include: [Restaurant]}
+      ]})
+  .then((day)=>{
+      res.status(200).json(day);
+  })
+  .catch(next);
+});
+
 
 module.exports = router;
